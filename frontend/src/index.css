@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-paper text-ink font-body antialiased;
+}
+
+/* Visible keyboard focus everywhere — never remove outlines without a replacement */
+:focus-visible {
+  outline: 2px solid theme('colors.denim.DEFAULT');
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Signature motif: a dashed "stitch" rule used as a section/nav divider */
+.stitch-rule {
+  height: 2px;
+  background-image: repeating-linear-gradient(90deg, currentColor 0 6px, transparent 6px 13px);
+  color: theme('colors.line');
+}
+
+/* Signature motif: swing-tag price badge on product cards, punched hole and all */
+.swing-tag {
+  position: relative;
+  background: theme('colors.paper');
+  border: 1.5px solid theme('colors.ink');
+  clip-path: polygon(18px 0, 100% 0, 100% 100%, 18px 100%, 0 50%);
+  padding-left: 22px;
+}
+.swing-tag::before {
+  content: '';
+  position: absolute;
+  left: 9px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 9999px;
+  background: theme('colors.ink');
+}
+
+.eyebrow {
+  @apply font-mono text-[11px] tracking-widest2 uppercase text-denim;
+}
