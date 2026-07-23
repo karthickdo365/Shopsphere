@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { getProducts, createProduct, updateProduct, deleteProduct } from '../../api/products';
 import { getCategories } from '../../api/categories';
 import ImageGalleryUpload from '../../components/common/ImageGalleryUpload';
+import Spinner from '../../components/common/Spinner';
 
 const emptyForm = {
   name: '', description: '', price: '', discountPrice: '', stock: '', brand: '',
@@ -14,8 +15,20 @@ export default function Products() {
   const [form, setForm] = useState(emptyForm);
   const [editingId, setEditingId] = useState(null);
   const [showForm, setShowForm] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const load = () => getProducts({ limit: 100 }).then((res) => setProducts(res.data));
+ const load = async () => {
+  setLoading(true);
+
+  try {
+    const res = await getProducts({ limit: 100 });
+    setProducts(res.data);
+  } catch (error) {
+    console.error("Failed to load products:", error);
+  } finally {
+    setLoading(false);
+  }
+};
   useEffect(() => { load(); getCategories().then(setCategories); }, []);
 
   const subCats = categories.find((c) => c.id === form.categoryId)?.subCategories || [];
@@ -112,20 +125,48 @@ export default function Products() {
         </form>
       )}
 
-      <div className="border border-line bg-white divide-y divide-line">
-        {products.map((p) => (
-          <div key={p.id} className="flex items-center gap-4 px-4 py-3">
-            <img src={p.images?.[0] || 'https://placehold.co/80x100'} alt="" className="w-10 h-14 object-cover border border-line" />
-            <div className="flex-1 text-sm">
-              <p className="font-semibold">{p.name}</p>
-              <p className="text-xs text-ink/50">{p.category?.name}{p.subCategory ? ` / ${p.subCategory.name}` : ''} · Stock {p.stock}</p>
-            </div>
-            <span className="font-mono text-sm">₹{Number(p.price).toFixed(0)}</span>
-            <button onClick={() => openEdit(p)} className="text-xs font-semibold text-denim hover:underline">Edit</button>
-            <button onClick={() => remove(p.id)} className="text-xs font-semibold text-rust hover:underline">Delete</button>
-          </div>
-        ))}
+     <div className="border border-line bg-white divide-y divide-line">
+  {loading ? (
+    <Spinner />
+  ) : (
+    products.map((p) => (
+      <div key={p.id} className="flex items-center gap-4 px-4 py-3">
+        <img
+          src={p.images?.[0] || "https://placehold.co/80x100"}
+          alt={p.name}
+          className="w-10 h-14 object-cover border border-line"
+        />
+
+        <div className="flex-1 text-sm">
+          <p className="font-semibold">{p.name}</p>
+
+          <p className="text-xs text-ink/50">
+            {p.category?.name}
+            {p.subCategory ? ` / ${p.subCategory.name}` : ""} · Stock {p.stock}
+          </p>
+        </div>
+
+        <span className="font-mono text-sm">
+          ₹{Number(p.price).toFixed(0)}
+        </span>
+
+        <button
+          onClick={() => openEdit(p)}
+          className="text-xs font-semibold text-denim hover:underline"
+        >
+          Edit
+        </button>
+
+        <button
+          onClick={() => remove(p.id)}
+          className="text-xs font-semibold text-rust hover:underline"
+        >
+          Delete
+        </button>
       </div>
+    ))
+  )}
+</div>
     </div>
   );
 }
