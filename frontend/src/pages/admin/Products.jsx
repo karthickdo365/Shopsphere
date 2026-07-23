@@ -127,7 +127,7 @@ export default function Products() {
 
      <div className="border border-line bg-white divide-y divide-line">
   {loading ? (
-    <Spinner />
+    <Spinner text="Loading products..." />
   ) : (
     products.map((p) => (
       <div key={p.id} className="flex items-center gap-4 px-4 py-3">
