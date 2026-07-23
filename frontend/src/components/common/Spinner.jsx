@@ -5,7 +5,7 @@ export default function Spinner({
     <div className="flex flex-col items-center justify-center py-16">
       <div className="relative">
         {/* Background Ring */}
-        <div className="w-14 h-14 rounded-full border-4 border-slate-200"></div>
+        <div className="w-10 h-10 rounded-full border-4 border-slate-200"></div>
 
         {/* Rotating Ring */}
         <div className="absolute inset-0 w-14 h-14 rounded-full border-4 border-transparent border-t-blue-600 border-r-indigo-500 animate-spin"></div>
