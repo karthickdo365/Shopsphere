@@ -1,23 +1,26 @@
 export default function Spinner({ text = "Loading..." }) {
-   return (
-    <div className="animate-pulse flex items-center gap-4 px-4 py-3 border-b border-line">
-      {/* Image */}
-      <div className="w-10 h-14 bg-gray-200 rounded"></div>
+  return (
+    <div className="flex flex-col items-center justify-center py-16">
+      <div className="flex items-center gap-2">
+        <span
+          className="w-2 h-2 rounded-full bg-blue-500 animate-bounce"
+          style={{ animationDelay: "0s" }}
+        ></span>
 
-      {/* Content */}
-      <div className="flex-1 space-y-2">
-        <div className="h-4 w-48 bg-gray-200 rounded"></div>
-        <div className="h-3 w-32 bg-gray-200 rounded"></div>
+        <span
+          className="w-2 h-2 rounded-full bg-yellow-500 animate-bounce"
+          style={{ animationDelay: "0.15s" }}
+        ></span>
+
+        <span
+          className="w-2 h-2 rounded-full bg-red-500 animate-bounce"
+          style={{ animationDelay: "0.3s" }}
+        ></span>
       </div>
 
-      {/* Price */}
-      <div className="h-4 w-16 bg-gray-200 rounded"></div>
-
-      {/* Buttons */}
-      <div className="flex gap-2">
-        <div className="w-12 h-6 bg-gray-200 rounded"></div>
-        <div className="w-14 h-6 bg-gray-200 rounded"></div>
-      </div>
+      <p className="mt-4 text-sm font-medium text-gray-500">
+        {text}
+      </p>
     </div>
   );
 }
