@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import Spinner from '../components/common/Spinner';
+import ButtonSpinner from "../components/common/ButtonSpinner";
 
 export default function Login() {
   const { login } = useAuth();
@@ -76,11 +76,8 @@ export default function Login() {
           disabled={busy}
           className="w-full bg-ink text-paper font-semibold uppercase tracking-wide py-3 hover:bg-denim disabled:opacity-50"
         >
-          {busy ? (
-  <div >
-    <Spinner />
-    {/* <span>Logging in...</span> */}
-  </div>
+      {busy ? (
+  <ButtonSpinner text="Logging in..." />
 ) : (
   "Log In"
 )}
