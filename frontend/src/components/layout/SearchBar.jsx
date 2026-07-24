@@ -28,9 +28,6 @@ const [loading, setLoading] = useState(false);
       });
 
       setResults(res.data);
-    } catch (err) {
-      console.error(err);
-      setResults([]);
     } finally {
       setLoading(false);
     }
@@ -40,13 +37,18 @@ const [loading, setLoading] = useState(false);
 }, [value]);
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        if (value.trim()) navigate(`/products?search=${encodeURIComponent(value.trim())}`);
-      }}
-      className="relative"
-    >
+   <form
+  onSubmit={(e) => {
+    e.preventDefault();
+
+    if (!value.trim()) return;
+
+    setResults([]); // close dropdown
+    navigate(`/products?search=${encodeURIComponent(value.trim())}`);
+  }}
+  className="relative"
+>
+    
       <input
         type="search"
         value={value}
