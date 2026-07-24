@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useState } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import ButtonSpinner from "../components/common/ButtonSpinner";
 
 export default function Login() {
@@ -9,58 +9,31 @@ export default function Login() {
   const location = useLocation();
 
   const [form, setForm] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
 
-  const [error, setError] = useState('');
-  const [emailError, setEmailError] = useState('');
+  const [error, setError] = useState("");
+  const [emailError, setEmailError] = useState("");
   const [busy, setBusy] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const validateEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!regex.test(email)) {
-      setEmailError('Please enter a valid email address.');
+    if (email && !regex.test(email)) {
+      setEmailError("Please enter a valid email address.");
     } else {
-      setEmailError('');
+      setEmailError("");
     }
   };
-const validatePassword = (password) => {
-  if (password.length < 8) {
-    setPasswordError("Password must be at least 8 characters.");
-    return;
-  }
 
-  if (!/[A-Z]/.test(password)) {
-    setPasswordError("Password must contain at least one uppercase letter.");
-    return;
-  }
-
-  if (!/[a-z]/.test(password)) {
-    setPasswordError("Password must contain at least one lowercase letter.");
-    return;
-  }
-
-  if (!/[0-9]/.test(password)) {
-    setPasswordError("Password must contain at least one number.");
-    return;
-  }
-
-  if (!/[!@#$%^&*(),.?\":{}|<>]/.test(password)) {
-    setPasswordError("Password must contain at least one special character.");
-    return;
-  }
-
-  setPasswordError("");
-};
   const submit = async (e) => {
     e.preventDefault();
 
     if (emailError) return;
 
-    setError('');
+    setError("");
     setBusy(true);
 
     try {
@@ -68,12 +41,12 @@ const validatePassword = (password) => {
 
       navigate(
         location.state?.from?.pathname ||
-          (user.role === 'ADMIN' ? '/admin' : '/')
+          (user.role === "ADMIN" ? "/admin" : "/")
       );
     } catch (err) {
       setError(
         err.response?.data?.message ||
-          'Login failed. Check your credentials.'
+          "Login failed. Check your credentials."
       );
     } finally {
       setBusy(false);
@@ -112,12 +85,16 @@ const validatePassword = (password) => {
 
               validateEmail(value);
             }}
-            className="mt-1 w-full border border-line bg-white px-3 py-2 text-sm focus-visible:outline-denim"
+            className={`mt-1 w-full border px-3 py-2 text-sm focus-visible:outline-denim ${
+              emailError
+                ? "border-red-500"
+                : "border-line"
+            }`}
           />
 
           {emailError && (
             <p className="mt-1 text-xs text-red-500">
-              {emailError}
+              ❌ {emailError}
             </p>
           )}
         </label>
@@ -133,24 +110,18 @@ const validatePassword = (password) => {
               type={showPassword ? "text" : "password"}
               required
               value={form.password}
-             onChange={(e) => {
-  const value = e.target.value;
-
-  setForm({
-    ...form,
-    password: value,
-  });
-
-  validatePassword(value);
-}}
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  password: e.target.value,
+                })
+              }
               className="w-full border border-line bg-white px-3 py-2 pr-12 text-sm focus-visible:outline-denim"
             />
 
             <button
               type="button"
-              onClick={() =>
-                setShowPassword(!showPassword)
-              }
+              onClick={() => setShowPassword(!showPassword)}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-xl hover:scale-110 transition-transform"
             >
               {showPassword ? "🙈" : "👀"}
@@ -168,14 +139,14 @@ const validatePassword = (password) => {
         </div>
 
         {error && (
-          <p className="text-sm text-rust">
-            {error}
+          <p className="text-sm text-red-500">
+            ❌ {error}
           </p>
         )}
 
         <button
           type="submit"
-        disabled={busy || emailError || passwordError}
+          disabled={busy || !!emailError}
           className="w-full bg-ink text-paper font-semibold uppercase tracking-wide py-3 hover:bg-denim disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {busy ? (
