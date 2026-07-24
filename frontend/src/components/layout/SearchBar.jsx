@@ -1,22 +1,43 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { getProducts } from "../../api/products";
 
 export default function SearchBar() {
   const [params] = useSearchParams();
   const [value, setValue] = useState(params.get('search') || '');
+  const [results, setResults] = useState([]);
+const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const timeoutRef = useRef(null);
 
-  useEffect(() => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    timeoutRef.current = setTimeout(() => {
-      if (value.trim()) {
-        navigate(`/products?search=${encodeURIComponent(value.trim())}`);
-      }
-    }, 450);
-    return () => clearTimeout(timeoutRef.current);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value]);
+ useEffect(() => {
+  if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
+  if (!value.trim()) {
+    setResults([]);
+    return;
+  }
+
+  timeoutRef.current = setTimeout(async () => {
+    setLoading(true);
+
+    try {
+      const res = await getProducts({
+        search: value,
+        limit: 5,
+      });
+
+      setResults(res.data);
+    } catch (err) {
+      console.error(err);
+      setResults([]);
+    } finally {
+      setLoading(false);
+    }
+  }, 300);
+
+  return () => clearTimeout(timeoutRef.current);
+}, [value]);
 
   return (
     <form

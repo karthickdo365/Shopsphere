@@ -4,6 +4,8 @@ import { getCategories } from '../../api/categories';
 import { useAuth } from '../../context/AuthContext';
 import { resendVerification } from '../../api/auth';
 import SearchBar from './SearchBar';
+import { getWishlist } from "../../api/wishlist"; 
+import { getCart } from "../../api/cart";
 
 export default function Header() {
   const [categories, setCategories] = useState([]);
@@ -11,6 +13,8 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [resendStatus, setResendStatus] = useState('');
   const { user, isAdmin, logout } = useAuth();
+  const [wishlistCount, setWishlistCount] = useState(0);
+  const [cartCount, setCartCount] = useState(0);
   const navigate = useNavigate();
 
   const handleResend = async () => {
@@ -23,9 +27,24 @@ export default function Header() {
     }
   };
 
-  useEffect(() => {
-    getCategories().then(setCategories).catch(() => setCategories([]));
-  }, []);
+useEffect(() => {
+  getCategories()
+    .then(setCategories)
+    .catch(() => setCategories([]));
+
+  if (user) {
+    getWishlist()
+      .then((items) => setWishlistCount(items.length))
+      .catch(() => setWishlistCount(0));
+
+    getCart()
+      .then((items) => setCartCount(items.length))
+      .catch(() => setCartCount(0));
+  } else {
+    setWishlistCount(0);
+    setCartCount(0);
+  }
+}, [user]);
 
   const goToListing = (categorySlug, subCategorySlug) => {
     setOpenCat(null);
@@ -92,12 +111,32 @@ export default function Header() {
 
           {/* Icons */}
           <div className="flex items-center gap-4 shrink-0">
-            <Link to="/wishlist" aria-label="Wishlist" className="text-ink hover:text-denim">
-              <HeartIcon />
-            </Link>
-            <Link to="/cart" aria-label="Cart" className="text-ink hover:text-denim">
-              <BagIcon />
-            </Link>
+            <Link
+  to="/wishlist"
+  aria-label="Wishlist"
+  className="relative text-ink hover:text-denim"
+>
+  <HeartIcon />
+
+  {wishlistCount > 0 && (
+    <span className="absolute -top-2 -right-2 bg-rust text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1">
+      {wishlistCount}
+    </span>
+  )}
+</Link>
+            <Link
+  to="/cart"
+  aria-label="Cart"
+  className="relative text-ink hover:text-denim"
+>
+  <BagIcon />
+
+  {cartCount > 0 && (
+    <span className="absolute -top-2 -right-2 bg-denim text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1">
+      {cartCount}
+    </span>
+  )}
+</Link>
             {user ? (
               <div className="relative group hidden sm:block">
                 <button className="text-sm font-semibold text-ink hover:text-denim">
