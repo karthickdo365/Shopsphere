@@ -78,7 +78,7 @@ export default function Login() {
         >
           {busy ? (
   <div className="flex items-center justify-center gap-2">
-    <ButtonSpinner />
+    <Spinner />
     <span>Logging in...</span>
   </div>
 ) : (
