@@ -9,6 +9,7 @@ export default function Login() {
   const [form, setForm] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const submit = async (e) => {
     e.preventDefault();
@@ -40,15 +41,28 @@ export default function Login() {
           />
         </label>
         <label className="block">
-          <span className="text-xs font-semibold uppercase tracking-wide text-ink/70">Password</span>
-          <input
-            type="password"
-            required
-            value={form.password}
-            onChange={(e) => setForm({ ...form, password: e.target.value })}
-            className="mt-1 w-full border border-line bg-white px-3 py-2 text-sm focus-visible:outline-denim"
-          />
-        </label>
+  <span className="text-xs font-semibold uppercase tracking-wide text-ink/70">
+    Password
+  </span>
+
+  <div className="relative mt-1">
+    <input
+      type={showPassword ? "text" : "password"}
+      required
+      value={form.password}
+      onChange={(e) => setForm({ ...form, password: e.target.value })}
+      className="w-full border border-line bg-white px-3 py-2 pr-12 text-sm focus-visible:outline-denim"
+    />
+
+    <button
+      type="button"
+      onClick={() => setShowPassword(!showPassword)}
+      className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-denim"
+    >
+      {showPassword ? "Hide" : "Show"}
+    </button>
+  </div>
+</label>
         <div className="text-right -mt-2">
           <Link to="/forgot-password" className="text-xs font-semibold text-denim hover:underline">
             Forgot password?
