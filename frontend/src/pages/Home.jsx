@@ -7,6 +7,7 @@ import { useAuth } from '../context/AuthContext';
 import BannerCarousel from '../components/home/BannerCarousel';
 import CategoryGrid from '../components/home/CategoryGrid';
 import ProductGrid from '../components/product/ProductGrid';
+import ProductSkeleton from "../components/common/ProductSkeleton";
 
 export default function Home() {
   const { user } = useAuth();
@@ -57,10 +58,18 @@ export default function Home() {
           </a>
         </div>
         {loading ? (
-          <p className="text-sm text-ink/50">Loading products…</p>
-        ) : (
-          <ProductGrid products={newArrivals} likedIds={likedIds} onLikeToggle={handleLikeToggle} />
-        )}
+  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+    {Array.from({ length: 8 }).map((_, index) => (
+      <ProductSkeleton key={index} />
+    ))}
+  </div>
+) : (
+  <ProductGrid
+    products={newArrivals}
+    likedIds={likedIds}
+    onLikeToggle={handleLikeToggle}
+  />
+)}
       </section>
     </div>
   );
