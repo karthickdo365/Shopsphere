@@ -213,8 +213,8 @@ const resetPassword = async (req, res) => {
   if (!token || !password) {
     return res.status(400).json({ success: false, message: 'Token and new password are required' });
   }
-  if (password.length < 6) {
-    return res.status(400).json({ success: false, message: 'Password must be at least 6 characters' });
+  if (password.length < 8) {
+    return res.status(400).json({ success: false, message: 'Password must be at least 8 characters' });
   }
 
   const tokenHash = hashToken(token);
