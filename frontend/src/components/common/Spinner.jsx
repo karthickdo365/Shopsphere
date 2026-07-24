@@ -1,5 +1,5 @@
-export default function ProductSkeleton() {
-  return (
+export default function Spinner({ text = "Loading..." }) {
+   return (
     <div className="animate-pulse flex items-center gap-4 px-4 py-3 border-b border-line">
       {/* Image */}
       <div className="w-10 h-14 bg-gray-200 rounded"></div>
