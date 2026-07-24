@@ -27,7 +27,34 @@ export default function Login() {
       setEmailError('');
     }
   };
+const validatePassword = (password) => {
+  if (password.length < 8) {
+    setPasswordError("Password must be at least 8 characters.");
+    return;
+  }
 
+  if (!/[A-Z]/.test(password)) {
+    setPasswordError("Password must contain at least one uppercase letter.");
+    return;
+  }
+
+  if (!/[a-z]/.test(password)) {
+    setPasswordError("Password must contain at least one lowercase letter.");
+    return;
+  }
+
+  if (!/[0-9]/.test(password)) {
+    setPasswordError("Password must contain at least one number.");
+    return;
+  }
+
+  if (!/[!@#$%^&*(),.?\":{}|<>]/.test(password)) {
+    setPasswordError("Password must contain at least one special character.");
+    return;
+  }
+
+  setPasswordError("");
+};
   const submit = async (e) => {
     e.preventDefault();
 
@@ -106,12 +133,16 @@ export default function Login() {
               type={showPassword ? "text" : "password"}
               required
               value={form.password}
-              onChange={(e) =>
-                setForm({
-                  ...form,
-                  password: e.target.value,
-                })
-              }
+             onChange={(e) => {
+  const value = e.target.value;
+
+  setForm({
+    ...form,
+    password: value,
+  });
+
+  validatePassword(value);
+}}
               className="w-full border border-line bg-white px-3 py-2 pr-12 text-sm focus-visible:outline-denim"
             />
 
@@ -144,7 +175,7 @@ export default function Login() {
 
         <button
           type="submit"
-          disabled={busy || emailError}
+        disabled={busy || emailError || passwordError}
           className="w-full bg-ink text-paper font-semibold uppercase tracking-wide py-3 hover:bg-denim disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {busy ? (
