@@ -56,13 +56,13 @@ export default function Login() {
       className="w-full border border-line bg-white px-3 py-2 pr-12 text-sm focus-visible:outline-denim"
     />
 
-    <button
-      type="button"
-      onClick={() => setShowPassword(!showPassword)}
-      className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-denim"
-    >
-      {showPassword ? "Hide" : "Show"}
-    </button>
+  <button
+  type="button"
+  onClick={() => setShowPassword(!showPassword)}
+  className="absolute right-3 top-1/2 -translate-y-1/2 text-xl hover:scale-110 transition-transform"
+>
+  {showPassword ? "🙈" : "👀"}
+</button>
   </div>
 </label>
         <div className="text-right -mt-2">

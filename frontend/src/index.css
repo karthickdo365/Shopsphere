@@ -54,3 +54,19 @@ body {
 .eyebrow {
   @apply font-mono text-[11px] tracking-widest2 uppercase text-denim;
 }
+
+@keyframes dotWave {
+  0%, 60%, 100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+
+  30% {
+    transform: translateY(-6px);
+    opacity: 1;
+  }
+}
+
+.dot-wave {
+  animation: dotWave 0.8s infinite ease-in-out;
+}
