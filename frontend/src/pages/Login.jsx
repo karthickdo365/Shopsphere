@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import Spinner from '../components/common/Spinner';
 
 export default function Login() {
   const { login } = useAuth();
@@ -10,6 +11,7 @@ export default function Login() {
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
 
   const submit = async (e) => {
     e.preventDefault();
@@ -74,7 +76,14 @@ export default function Login() {
           disabled={busy}
           className="w-full bg-ink text-paper font-semibold uppercase tracking-wide py-3 hover:bg-denim disabled:opacity-50"
         >
-          {busy ? 'Logging in…' : 'Log In'}
+          {busy ? (
+  <div className="flex items-center justify-center gap-2">
+    <ButtonSpinner />
+    <span>Logging in...</span>
+  </div>
+) : (
+  "Log In"
+)}
         </button>
       </form>
       <p className="text-sm text-ink/60 mt-4">
