@@ -203,8 +203,21 @@ const forgotPassword = async (req, res) => {
     data: { resetPasswordTokenHash: tokenHash, resetPasswordExpires: new Date(Date.now() + RESET_PASSWORD_EXPIRY_MS) },
   });
 
-  await sendPasswordResetEmail(user.email, user.name, `${FRONTEND_URL}/reset-password/${rawToken}`);
+ try {
+  await sendPasswordResetEmail(
+    user.email,
+    user.name,
+    `${FRONTEND_URL}/reset-password/${rawToken}`
+  );
+
   res.json(genericResponse);
+} catch (error) {
+  console.error("Forgot Password Error:", error);
+  return res.status(500).json({
+    success: false,
+    message: error.message,
+  });
+}
 };
 
 // POST /api/v1/auth/reset-password  { token, password }
