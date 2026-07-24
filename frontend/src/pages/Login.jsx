@@ -77,7 +77,7 @@ export default function Login() {
           className="w-full bg-ink text-paper font-semibold uppercase tracking-wide py-3 hover:bg-denim disabled:opacity-50"
         >
           {busy ? (
-  <div className="flex items-center justify-center ">
+  <div >
     <Spinner />
     {/* <span>Logging in...</span> */}
   </div>
