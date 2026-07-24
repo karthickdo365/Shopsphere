@@ -1,4 +1,4 @@
-export default function Spinner({ text = "Loading..." }) {
+export default function Spinner({ text = "" }) {
   return (
     <div className="flex flex-col items-center justify-center py-16">
       <div className="flex items-center gap-2">
